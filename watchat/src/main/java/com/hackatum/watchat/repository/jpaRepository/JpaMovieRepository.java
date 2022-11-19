@@ -13,10 +13,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.SortedMap;
 
 interface JpaMovieRepositoryInterface extends JpaRepository<JpaMovie, Long> {
-    @Query(value = "SELECT * FROM Movie m ORDER BY m.name asc limit 4", nativeQuery = true)
-    List<JpaMovie> get4Alphabetic();
+    @Query(value = "SELECT m.tmdb_id FROM Movie m ORDER BY Random() limit 1", nativeQuery = true)
+    Long getRandom();
 
     @Query(value = "SELECT * FROM Tag t WHERE t.tmdb_id = ?1 ORDER BY t.name asc", nativeQuery = true)
     List<JpaMovieTag> getTagsFromMovie(Long id);
@@ -64,6 +67,32 @@ public class JpaMovieRepository implements MovieRepository {
 
     @Override
     public List<Movie> getBestMatch(List<MovieTag> tags) {
-        return jpaRepository.get4Alphabetic().stream().map(jpaMovie -> objectMapper.convertValue(jpaMovie, Movie.class)).toList();
+      SortedMap<Movie
+      Long firstId = jpaRepository.getRandom();
+      return jpaRepository.get4Alphabetic().stream().map(jpaMovie -> objectMapper.convertValue(jpaMovie, Movie.class)).toList();
     }
+
+    private static double distance(List<MovieTag> tags1, List<MovieTag> tags2){
+      double res = 0;
+      HashMap<String, double> htag1 = new HashMap<String, double>();
+      HashMap<String, double> htag2 = new HashMap<String, double>();
+
+      for(MovieTag tag: tags1){
+        htag1.put(tag.getName(),tag.getMatch());
+      };
+
+      for(MovieTag tag: tags2){
+        htag2.put(tag.getName(),tag.getMatch());
+      };
+
+      for(Map.Entry<String, double> tag: htag1){
+        double diff = Math.abs(tag.getValue() - htag2.get(tag.getKey()));
+        if(diff > 0.1){
+          diff *= diff;  
+          diff *= JpaMovieRepository.weights.get(tag.getKey());
+          res += diff;
+        };
+      };
+      return res;
+    };
 }
