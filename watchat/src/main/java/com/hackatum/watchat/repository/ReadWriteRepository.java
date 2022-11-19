@@ -9,4 +9,5 @@ public interface ReadWriteRepository<T extends HasId<ID>, ID> extends ReadReposi
     T save(T entity);
     List<T> saveAll(Iterable<T> entities);
     void deleteById(ID id);
+    void deleteAll();
 }

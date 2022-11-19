@@ -49,4 +49,9 @@ public class InMemRepository<T extends HasId<ID>, ID> implements ReadWriteReposi
     public void deleteById(ID id) {
         list.removeIf((item) -> Objects.equals(item.getId(), id));
     }
+
+    @Override
+    public void deleteAll() {
+        list.clear();
+    }
 }

@@ -18,7 +18,7 @@ import java.util.TreeMap;
 import java.util.SortedMap;
 
 interface JpaMovieRepositoryInterface extends JpaRepository<JpaMovie, Long> {
-    @Query(value = "SELECT m.tmdb_id FROM Movie m ORDER BY Random() limit 1", nativeQuery = true)
+    @Query(value = "SELECT m.tmdb_id FROM Movie m JOIN FETCH m.neighbours ORDER BY Random() limit 1", nativeQuery = true)
     Long getRandom();
 
     @Query(value = "SELECT * FROM Tag t WHERE t.tmdb_id = ?1 ORDER BY t.name asc", nativeQuery = true)
@@ -63,6 +63,11 @@ public class JpaMovieRepository implements MovieRepository {
     @Override
     public void deleteById(Long id) {
         jpaRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        jpaRepository.deleteAll();
     }
 
     @Override
