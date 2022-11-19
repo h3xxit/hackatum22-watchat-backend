@@ -1,8 +1,8 @@
 import psycopg2
 from sortedcontainers import SortedDict
 
-DBNAME = "streaming-data"
-DBUSER = "arne"
+DBNAME = "watchatdb"
+DBUSER = "postgres"
 GRAPHDEPTH = 10
 WEIGHTS = {
       'anime': 0.4,
@@ -41,16 +41,16 @@ def getDatabaseConnection():
 
 def insertNeighbours(node, cur, con):
   for nxt in node.neighbours.values():
-    cur.execute("""INSERT INTO edges_test (start_id, end_id) VALUES (%s, %s)
+    cur.execute("""INSERT INTO movie_neighbours (movie_tmdb_id, neighbours_tmdb_id) VALUES (%s, %s)
         """, (node.idNumber, nxt.idNumber))
     con.commit()
 
 def getNodes(cur, con):
   nodes = []
-  cur.execute("SELECT DISTINCT tmdb_id FROM graph_data_test")
+  cur.execute("SELECT tmdb_id FROM movie")
   ids = cur.fetchall()
   for idNumber in ids:
-    cur.execute("SELECT name, match FROM graph_data_test WHERE tmdb_id = %s", idNumber)
+    cur.execute("SELECT name, match FROM tag WHERE tmdb_id = %s", idNumber)
     tag_dict = dict(cur.fetchall())
 
     aktNode = Node(tag_dict, idNumber)
