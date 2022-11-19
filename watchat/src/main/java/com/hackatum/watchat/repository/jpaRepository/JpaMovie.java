@@ -25,7 +25,9 @@ public class JpaMovie {
     private String name;
     @Column(columnDefinition = "TEXT")
     private String description;
+    @Column(columnDefinition = "TEXT")
     private String image;
+    @Column(columnDefinition = "TEXT")
     private String redirect;
     @OneToMany(
         cascade = CascadeType.ALL,
