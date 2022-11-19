@@ -2,12 +2,14 @@ package com.hackatum.watchat.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hackatum.watchat.entities.MovieTag;
 import com.hackatum.watchat.entities.Tag;
+import com.hackatum.watchat.repository.TagRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,16 +25,18 @@ public class BartLargeMnliClassifierService implements ClassifierService{
     final private String HUGGINGFACE_API_URI = "https://api-inference.huggingface.co";
     final private String HUGGINGFACE_API_URL = "/models/facebook/bart-large-mnli";
     final private String HUGGINGFACE_API_TOKEN = "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";
-    //final private String huggingface_headers = {"Authorization": f"Bearer {HUGGINGFACE_API_TOKEN}"}
-    List<String> tags = List.of("funny", "sad");
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @Override
-    public Mono<List<Tag>> classify(String text) {
+    public Mono<List<MovieTag>> classify(String text) {
         WebClient client = WebClient.create(HUGGINGFACE_API_URI);
         String body = "";
         try
         {
             ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder().build();
+            List<String> tags = tagRepository.findAll().stream().map(Tag::getName).toList();
             body = objectMapper.writeValueAsString(new HuggingfaceApiRequestBody(Map.of("candidate_labels", tags), text));
         } catch (JsonProcessingException ex){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not parse tag list for external api request");
@@ -49,9 +53,9 @@ public class BartLargeMnliClassifierService implements ClassifierService{
                 .retrieve()
                 .bodyToMono(HuggingfaceApiResponseBody.class)
                     .map(responseBody -> {
-                        List<Tag> result = new ArrayList<>();
+                        List<MovieTag> result = new ArrayList<>();
                         for(int i = 0; i<responseBody.scores.size(); i++){
-                            result.add(new Tag(null, responseBody.labels.get(i), responseBody.scores.get(i)));
+                            result.add(new MovieTag(responseBody.labels.get(i), responseBody.scores.get(i)));
                         }
                         return result;
                     });

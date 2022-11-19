@@ -9,11 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tag implements HasId<String>{
+public class MovieTag {
     private String name;
-
-    @Override
-    public String getId() {
-        return name;
-    }
+    private double match;
 }

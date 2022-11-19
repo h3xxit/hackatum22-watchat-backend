@@ -10,7 +10,7 @@ import java.util.List;
 public class Movie implements HasId<Long>{
     Long id;
     String name;
-    List<Tag> tags;
+    List<MovieTag> tags;
 
     @Override
     public Long getId(){

@@ -1,7 +1,7 @@
 package com.hackatum.watchat.controller;
 
 import com.hackatum.watchat.entities.Message;
-import com.hackatum.watchat.entities.Tag;
+import com.hackatum.watchat.entities.MovieTag;
 import com.hackatum.watchat.service.ClassifierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class MessageController {
     ClassifierService classifierService;
 
     @PostMapping("/message")
-    Mono<List<Tag>> receiveMessage(@RequestBody Message msg){
+    Mono<List<MovieTag>> receiveMessage(@RequestBody Message msg){
         return classifierService.classify(msg.getText());
     }
 }
