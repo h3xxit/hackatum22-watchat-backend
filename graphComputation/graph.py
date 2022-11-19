@@ -6,17 +6,17 @@ DBNAME = "watchatdb"
 DBUSER = "postgres"
 GRAPHDEPTH = 10
 WEIGHTS = {
-      'anime': 0.4,
-      'car': 0.5,
-      'battle': 0.8,
-      'love': 1.0,
-      'comedy': 0.95,
-      'happy': 0.9,
-      'sad': 0.85,
-      'police': 0.35,
-      'superhero': 0.7,
-      'dystopia': 0.25,
-      'popularity': 0.01
+      'superhero': 0.8,
+      'sport': 0.8,
+      'criminal': 0.7,
+      'happy': 1.4,
+      'sad': 1.5,
+      'horror': 1,
+      'love': 1.3,
+      'funny': 0.9,
+      'space': 0.7,
+      'fantasy': 0.9,
+      'popularity':0.01
       }
 
 class Node:
