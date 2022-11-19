@@ -16,7 +16,6 @@ import java.util.List;
 @Table(name = "movie")
 public class JpaMovie {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "tmdb_id")
     private Long id;
     @Column(name="name", nullable=false)
