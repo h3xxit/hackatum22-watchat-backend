@@ -32,6 +32,6 @@ public class JpaMovie {
     )
     @JoinColumn(name = "tmdb_id")
     private List<JpaMovieTag> tags;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<JpaMovie> neighbours;
 }

@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 interface JpaMovieRepositoryInterface extends JpaRepository<JpaMovie, Long> {
-    @Query(value = "SELECT * FROM Movie m ORDER BY m.name asc limit 4", nativeQuery = true)
+    @Query(value = "SELECT * FROM Movie m JOIN FETCH m.neighbours ORDER BY m.name asc limit 4", nativeQuery = true)
     List<JpaMovie> get4Alphabetic();
 
     @Query(value = "SELECT * FROM Tag t WHERE t.tmdb_id = ?1 ORDER BY t.name asc", nativeQuery = true)
