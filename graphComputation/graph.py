@@ -1,5 +1,6 @@
 import psycopg2
 from sortedcontainers import SortedDict
+from math import sqrt
 
 DBNAME = "watchatdb"
 DBUSER = "postgres"
@@ -28,8 +29,10 @@ class Node:
   def dist(self, node):
     res = 0
     for name, match in self.tags.items():
-      res += pow(match - node.tags[name],2) * WEIGHTS[name] # weighted euclidean distance
-    return res
+      tmp = abs(match - node.tags[name])
+      if(tmp > 0.2):
+        res += pow(match - node.tags[name],2) * WEIGHTS[name] # weighted euclidean distance
+    return sqrt(res)
 
   def updateNeighbours(self, node):
     self.neighbours.update([(self.dist(node),node)])
@@ -52,12 +55,12 @@ def getNodes(cur, con):
   for idNumber in ids:
     cur.execute("SELECT name, match FROM tag WHERE tmdb_id = %s", idNumber)
     tag_dict = dict(cur.fetchall())
-
-    aktNode = Node(tag_dict, idNumber)
-    for node in nodes:
-      node.updateNeighbours(aktNode)
-      aktNode.updateNeighbours(node)
-    nodes.append(aktNode)
+    if len(tag_dict):
+      aktNode = Node(tag_dict, idNumber)
+      for node in nodes:
+        node.updateNeighbours(aktNode)
+        aktNode.updateNeighbours(node)
+      nodes.append(aktNode)
   for node in nodes:
     insertNeighbours(node, cur, con)
 
