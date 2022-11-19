@@ -1,6 +1,8 @@
 package com.hackatum.watchat.repository.inMemRepository;
 
-import com.hackatum.watchat.repository.MovieRepository;
+import com.hackatum.watchat.entities.Movie;
+import org.springframework.stereotype.Repository;
 
-public class InMemMovieRepository implements MovieRepository {
+@Repository
+public class InMemMovieRepository extends InMemRepository<Movie, String>{
 }
