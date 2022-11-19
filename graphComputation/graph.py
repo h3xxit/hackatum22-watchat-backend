@@ -1,8 +1,8 @@
 import psycopg2
 from sortedcontainers import SortedDict
 
-DBNAME = "Movies"
-DBUSER = "postgres"
+DBNAME = "streaming_data"
+DBUSER = "arne"
 GRAPHDEPTH = 10
 
 
@@ -39,7 +39,7 @@ def getNodes(cur):
   cur.execute("SELECT id FROM Movies")
   ids = cur.fetchall()
   for idNumber in ids:
-    cur.execute("SELECT * FROM Tags WHERE id = %s", idNumber)
+    cur.execute("SELECT * FROM tags WHERE id = %s", idNumber)
     tags = [x[1:] for x in cur.fetchall()]
     tags.sort()
     aktNode = Node([x[2] for x in tags], idNumber)
@@ -52,6 +52,7 @@ def getNodes(cur):
 
 
 def cleanUp(cur, con):
+  con.commit()
   cur.close()
   con.close()
 
