@@ -3,10 +3,7 @@ package com.hackatum.watchat.controller;
 import com.hackatum.watchat.entities.Movie;
 import com.hackatum.watchat.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,15 @@ public class MovieController {
     @PostMapping("/movie")
     Movie getMovie(@RequestParam("id") Long movieId){
         return movieRepository.findById(movieId);
+    }
+
+    @DeleteMapping("/deleteAll")
+    private void deleteAllMovies(){
+        movieRepository.deleteAll();
+    }
+
+    @DeleteMapping("/delete")
+    private void deleteMovie(@RequestParam Long id){
+        movieRepository.deleteById(id);
     }
 }

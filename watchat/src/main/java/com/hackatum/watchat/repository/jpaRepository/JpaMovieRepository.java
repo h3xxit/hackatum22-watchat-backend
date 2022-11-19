@@ -63,6 +63,11 @@ public class JpaMovieRepository implements MovieRepository {
     }
 
     @Override
+    public void deleteAll() {
+        jpaRepository.deleteAll();
+    }
+
+    @Override
     public List<Movie> getBestMatch(List<MovieTag> tags) {
         return jpaRepository.get4Alphabetic().stream().map(jpaMovie -> objectMapper.convertValue(jpaMovie, Movie.class)).toList();
     }

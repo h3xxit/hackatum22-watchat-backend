@@ -7,6 +7,7 @@ import com.hackatum.watchat.entities.UserInputResponseDto;
 import com.hackatum.watchat.repository.MovieRepository;
 import com.hackatum.watchat.service.ClassifierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ public class MessageController {
     @Autowired
     MovieRepository movieRepository;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/message")
     Mono<UserInputResponseDto> receiveMessage(@RequestBody Message msg){
         return classifierService.classify(msg.getText()).map(movieTags ->
