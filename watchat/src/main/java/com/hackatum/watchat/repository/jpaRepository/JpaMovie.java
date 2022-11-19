@@ -1,5 +1,8 @@
 package com.hackatum.watchat.repository.jpaRepository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hackatum.watchat.entities.Movie;
+import com.hackatum.watchat.entities.MovieTag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,4 +36,9 @@ public class JpaMovie {
     private List<JpaMovieTag> tags;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<JpaMovie> neighbours;
+
+    public Movie toMovie(ObjectMapper objectMapper){
+        return new Movie(getId(), getName(), getDescription(), getImage(), getRedirect(),
+                getTags().stream().map(jpaMovieTag -> objectMapper.convertValue(jpaMovieTag, MovieTag.class)).toList());
+    }
 }

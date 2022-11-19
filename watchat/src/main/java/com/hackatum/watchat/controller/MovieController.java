@@ -1,13 +1,17 @@
 package com.hackatum.watchat.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hackatum.watchat.entities.JpaMovieDto;
 import com.hackatum.watchat.entities.Movie;
 import com.hackatum.watchat.repository.MovieRepository;
 import com.hackatum.watchat.repository.jpaRepository.JpaMovie;
 import com.hackatum.watchat.repository.jpaRepository.JpaMovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class MovieController {
@@ -28,8 +32,9 @@ public class MovieController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/saveJpaMovies")
-    private void saveJpaMovies(@RequestBody List<JpaMovie> movies){
-        ((JpaMovieRepository)movieRepository).saveAllJpa(movies);
+    private void saveJpaMovies(@RequestBody List<JpaMovieDto> movies){
+        JpaMovieRepository mRep = ((JpaMovieRepository)movieRepository);
+        mRep.saveAllJpa(movies);
     }
 
     @PostMapping("/movie")

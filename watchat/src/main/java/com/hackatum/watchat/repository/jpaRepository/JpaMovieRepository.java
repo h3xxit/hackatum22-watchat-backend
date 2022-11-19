@@ -1,6 +1,7 @@
 package com.hackatum.watchat.repository.jpaRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hackatum.watchat.entities.JpaMovieDto;
 import com.hackatum.watchat.entities.Movie;
 import com.hackatum.watchat.entities.MovieTag;
 import com.hackatum.watchat.repository.MovieRepository;
@@ -44,7 +45,7 @@ public class JpaMovieRepository implements MovieRepository {
     @Transactional
     @Override
     public Movie findById(Long id) {
-        return objectMapper.convertValue(jpaRepository.findById(id), Movie.class);
+        return jpaRepository.findById(id).map(jpaMovie -> jpaMovie.toMovie(objectMapper)).orElse(null);
     }
 
     @Transactional
@@ -63,8 +64,24 @@ public class JpaMovieRepository implements MovieRepository {
         return objectMapper.convertValue(jpaRepository.save(objectMapper.convertValue(entity, JpaMovie.class)), Movie.class);
     }
 
-    public List<JpaMovie> saveAllJpa(Iterable<JpaMovie> entities) {
-        return jpaRepository.saveAll(entities);
+    @Transactional
+    public JpaMovie findJpaById(Long id) {
+        return jpaRepository.findById(id).orElse(null);
+    }
+
+    public void saveAllJpa(List<JpaMovieDto> entities) {
+        for (JpaMovieDto jpaMovieDto : entities) {
+            jpaRepository.save(new JpaMovie(jpaMovieDto.getId(), jpaMovieDto.getName(), jpaMovieDto.getDescription(), jpaMovieDto.getImage(), jpaMovieDto.getRedirect(), jpaMovieDto.getTags(), List.of()));
+        }
+        for (JpaMovieDto jpaMovieDto : entities) {
+            var neigbours = jpaMovieDto.getNeighbours().stream().map(this::findJpaById).filter(movie -> {
+                System.out.println("Neighbour not found");
+                return movie != null;
+            }).toList();
+            JpaMovie jpaMovie = findJpaById(jpaMovieDto.getId());
+            jpaMovie.setNeighbours(neigbours);
+            jpaRepository.save(jpaMovie);
+        }
     }
 
     @Override
@@ -104,14 +121,14 @@ public class JpaMovieRepository implements MovieRepository {
             if (currentJpaMovie == null) {
                 throw new RuntimeException("jpaRepository return invalid random id");
             }
-            currentMovie = objectMapper.convertValue(currentJpaMovie, Movie.class);
+            currentMovie = findById(firstId);
             List<JpaMovie> neighbours = currentJpaMovie.getNeighbours();
             List<MovieTag> currentTags = currentMovie.getTags();
             double distance = distance(tags, currentTags);
             best = new MovieWrapper(currentMovie, distance);
             candidates.add(best);
             for (JpaMovie neighbour : neighbours) {
-                Movie n = objectMapper.convertValue(neighbour, Movie.class);
+                Movie n = neighbour.toMovie(objectMapper);
                 double d = distance(tags, n.getTags());
                 MovieWrapper nWrapper = new MovieWrapper(n, d);
                 candidates.add(nWrapper);
@@ -126,7 +143,7 @@ public class JpaMovieRepository implements MovieRepository {
         while (i<4 && !candidates.isEmpty()) {
             MovieWrapper first = candidates.first();
             candidates.remove(first);
-            result.add(objectMapper.convertValue(first, Movie.class));
+            result.add(first.getMovie());
             ++i;
         }
         return result;
