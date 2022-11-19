@@ -30,7 +30,7 @@ class Node:
     res = 0
     for name, match in self.tags.items():
       tmp = abs(match - node.tags[name])
-      if(tmp > 0.2):
+      if(tmp > 0.1):
         res += pow(match - node.tags[name],2) * WEIGHTS[name] # weighted euclidean distance
     return sqrt(res)
 
