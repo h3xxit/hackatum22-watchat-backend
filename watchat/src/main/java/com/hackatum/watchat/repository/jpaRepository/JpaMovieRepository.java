@@ -11,11 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Repository;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.SortedMap;
+import java.util.*;
 
 interface JpaMovieRepositoryInterface extends JpaRepository<JpaMovie, Long> {
     @Query(value = "SELECT m.tmdb_id FROM Movie m JOIN FETCH m.neighbours ORDER BY Random() limit 1", nativeQuery = true)
@@ -72,15 +68,15 @@ public class JpaMovieRepository implements MovieRepository {
 
     @Override
     public List<Movie> getBestMatch(List<MovieTag> tags) {
-      SortedMap<Movie
       Long firstId = jpaRepository.getRandom();
-      return jpaRepository.get4Alphabetic().stream().map(jpaMovie -> objectMapper.convertValue(jpaMovie, Movie.class)).toList();
+      //return jpaRepository.get4Alphabetic().stream().map(jpaMovie -> objectMapper.convertValue(jpaMovie, Movie.class)).toList();
+        return null;
     }
 
     private static double distance(List<MovieTag> tags1, List<MovieTag> tags2){
       double res = 0;
-      HashMap<String, double> htag1 = new HashMap<String, double>();
-      HashMap<String, double> htag2 = new HashMap<String, double>();
+      HashMap<String, Double> htag1 = new HashMap<String, Double>();
+      HashMap<String, Double> htag2 = new HashMap<String, Double>();
 
       for(MovieTag tag: tags1){
         htag1.put(tag.getName(),tag.getMatch());
@@ -90,11 +86,11 @@ public class JpaMovieRepository implements MovieRepository {
         htag2.put(tag.getName(),tag.getMatch());
       };
 
-      for(Map.Entry<String, double> tag: htag1){
+      for(Map.Entry<String, Double> tag: htag1.entrySet()){
         double diff = Math.abs(tag.getValue() - htag2.get(tag.getKey()));
         if(diff > 0.1){
           diff *= diff;  
-          diff *= JpaMovieRepository.weights.get(tag.getKey());
+          //diff *= JpaMovieRepository.weights.get(tag.getKey());
           res += diff;
         };
       };
