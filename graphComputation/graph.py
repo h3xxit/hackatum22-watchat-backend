@@ -4,7 +4,7 @@ from math import sqrt
 
 DBNAME = "watchatdb"
 DBUSER = "postgres"
-GRAPHDEPTH = 10
+GRAPHDEPTH = 100
 WEIGHTS = {
       'superhero': 0.8,
       'sport': 0.8,
