@@ -1,9 +1,10 @@
 package com.hackatum.watchat.service;
 
-import com.hackatum.watchat.entities.Tag;
+import com.hackatum.watchat.entities.MovieTag;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 public interface ClassifierService {
-    List<Tag> classify(String text);
+    Mono<List<MovieTag>> classify(String text);
 }
