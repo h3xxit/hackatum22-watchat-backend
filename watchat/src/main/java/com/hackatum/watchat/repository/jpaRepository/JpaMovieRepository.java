@@ -72,12 +72,11 @@ public class JpaMovieRepository implements MovieRepository {
     public void saveAllJpa(List<JpaMovieDto> entities) {
         for (JpaMovieDto jpaMovieDto : entities) {
             JpaMovie mv = new JpaMovie(jpaMovieDto.getId(), jpaMovieDto.getName(), jpaMovieDto.getDescription(), jpaMovieDto.getImage(), jpaMovieDto.getRedirect(), jpaMovieDto.getTags(), List.of());
-            System.out.println(mv.getId() + " " + mv.getTags());
             jpaRepository.save(mv);
         }
         for (JpaMovieDto jpaMovieDto : entities) {
             var neigbours = jpaMovieDto.getNeighbours().stream().map(this::findJpaById).filter(movie -> {
-                System.out.println("Neighbour not found");
+                //System.out.println("Neighbour not found");
                 return movie != null;
             }).toList();
             JpaMovie jpaMovie = findJpaById(jpaMovieDto.getId());
