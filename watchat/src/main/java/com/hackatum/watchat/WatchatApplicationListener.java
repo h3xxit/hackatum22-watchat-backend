@@ -2,6 +2,7 @@ package com.hackatum.watchat;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hackatum.watchat.entities.MovieTag;
 import com.hackatum.watchat.entities.Tag;
 import com.hackatum.watchat.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,18 @@ public class WatchatApplicationListener implements ApplicationListener<Applicati
     @Autowired
     private TagRepository tagRepository;
 
+    List<String> tags = List.of("anime", "car", "battle", "love", "comedy", "happy", "sad", "police", "superhero", "dystopia");
+
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         System.out.println("Loaded " + loadTags() + " tags on startup");
     }
 
     private int loadTags() {
-        ObjectMapper mapper = new Jackson2ObjectMapperBuilder().build();
+        tagRepository.saveAll(tags.stream().map(Tag::new).toList());
+        return tags.size();
+
+        /*ObjectMapper mapper = new Jackson2ObjectMapperBuilder().build();
         mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 
         //var resource = new ClassPathResource("Tags.json");
@@ -46,6 +52,6 @@ public class WatchatApplicationListener implements ApplicationListener<Applicati
             return tags.size();
         } catch (Exception ex){
             return 0;
-        }
+        }*/
     }
 }
