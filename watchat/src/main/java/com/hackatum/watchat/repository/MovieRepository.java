@@ -1,4 +1,6 @@
 package com.hackatum.watchat.repository;
 
-public interface MovieRepository {
+import com.hackatum.watchat.entities.Movie;
+
+public interface MovieRepository extends ReadWriteRepository<Movie, Long>{
 }
