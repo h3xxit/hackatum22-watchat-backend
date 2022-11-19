@@ -21,6 +21,7 @@ public class JpaMovie {
     private Long id;
     @Column(name="name", nullable=false)
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String image;
     private String redirect;
@@ -31,6 +32,6 @@ public class JpaMovie {
     )
     @JoinColumn(name = "tmdb_id")
     private List<JpaMovieTag> tags;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<JpaMovie> neighbours;
 }

@@ -3,6 +3,7 @@ package com.hackatum.watchat.controller;
 import com.hackatum.watchat.entities.Message;
 import com.hackatum.watchat.entities.Movie;
 import com.hackatum.watchat.entities.MovieTag;
+import com.hackatum.watchat.entities.UserInputResponseDto;
 import com.hackatum.watchat.repository.MovieRepository;
 import com.hackatum.watchat.service.ClassifierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class MessageController {
     MovieRepository movieRepository;
 
     @PostMapping("/message")
-    Mono<List<Movie>> receiveMessage(@RequestBody Message msg){
+    Mono<UserInputResponseDto> receiveMessage(@RequestBody Message msg){
         return classifierService.classify(msg.getText()).map(movieTags ->
         {
             for (MovieTag movieTag: movieTags) {
@@ -31,7 +32,7 @@ public class MessageController {
                 if(pair == null) continue;
                 movieTag.setMatch((movieTag.getMatch() + pair.getMatch()) / 2);
             }
-            return movieRepository.getBestMatch(movieTags);
+            return new UserInputResponseDto(movieRepository.getBestMatch(movieTags), movieTags, "");
         });
     }
 }
