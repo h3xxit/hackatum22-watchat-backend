@@ -21,4 +21,12 @@ public class JpaMovieTag {
     private String name;
     @Column(name="match", nullable=false)
     private Double match;
+
+    @Override
+    public String toString() {
+        return "JpaMovieTag{" +
+                "name='" + name + '\'' +
+                ", match=" + match +
+                '}';
+    }
 }
