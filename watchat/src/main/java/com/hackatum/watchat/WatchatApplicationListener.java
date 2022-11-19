@@ -10,9 +10,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Component;
-
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 
 @Component

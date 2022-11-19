@@ -4,6 +4,7 @@ import com.hackatum.watchat.entities.HasId;
 import com.hackatum.watchat.repository.ReadWriteRepository;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,9 +36,9 @@ public class InMemRepository<T extends HasId<ID>, ID> implements ReadWriteReposi
     }
 
     @Override
-    public List<T> saveAll(Iterable<T> entity) {
-        List<T> newList = new ArrayList<>();
-        entity.forEach(item -> {
+    public List<T> saveAll(Iterable<T> entities) {
+        List<T> newList = new LinkedList<>();
+        entities.forEach(item -> {
             save(item);
             newList.add(item);
         });
