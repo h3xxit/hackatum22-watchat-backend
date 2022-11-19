@@ -16,12 +16,12 @@ public class MovieController {
     private MovieRepository movieRepository;
 
     @PostMapping("/saveMovie")
-    Movie saveMovie(@RequestBody Movie movie){
+    private Movie saveMovie(@RequestBody Movie movie){
         return movieRepository.save(movie);
     }
 
     @PostMapping("/saveMovies")
-    List<Movie> saveMovies(@RequestBody List<Movie> movie){
+    private List<Movie> saveMovies(@RequestBody List<Movie> movie){
         return movieRepository.saveAll(movie);
     }
 
