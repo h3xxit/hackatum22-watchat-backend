@@ -4,7 +4,9 @@ import com.hackatum.watchat.entities.*;
 import com.hackatum.watchat.repository.MovieRepository;
 import com.hackatum.watchat.service.ClassifierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -20,6 +22,9 @@ public class MessageController {
     @CrossOrigin(origins = "*")
     @PostMapping("/message")
     Mono<UserInputResponseDto> receiveMessage(@RequestBody Message msg){
+        if(msg.getText() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Text field should not be empty");
+        }
         return classifierService.classify(msg.getText()).map(movieTags ->
         {
             calculateWeights(movieTags, msg.getPreferences());

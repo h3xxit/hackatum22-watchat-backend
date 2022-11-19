@@ -163,11 +163,15 @@ public class JpaMovieRepository implements MovieRepository {
         }
 
         for (Map.Entry<String, Double> tag : htag1.entrySet()) {
-            double diff = Math.abs(tag.getValue() - htag2.get(tag.getKey()));
-            if (diff > 0.1) {
-                diff *= diff;
-                diff *= JpaMovieRepository.WEIGHTS.get(tag.getKey());
-                res += diff;
+            if(htag2.containsKey(tag.getKey())) {
+                double diff = Math.abs(tag.getValue() - htag2.get(tag.getKey()));
+                if (diff > 0.1) {
+                    diff *= diff;
+                    diff *= JpaMovieRepository.WEIGHTS.get(tag.getKey());
+                    res += diff;
+                }
+            }else {
+                System.out.println("Tag: " + tag.getKey() + " is missing!");
             }
         }
         return res;
