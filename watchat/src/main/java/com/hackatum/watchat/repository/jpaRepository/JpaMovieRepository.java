@@ -3,19 +3,20 @@ package com.hackatum.watchat.repository.jpaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackatum.watchat.entities.Movie;
 import com.hackatum.watchat.entities.MovieTag;
-import com.hackatum.watchat.entities.Tag;
 import com.hackatum.watchat.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 interface JpaMovieRepositoryInterface extends JpaRepository<JpaMovie, Long> {
-    @Query(value = "SELECT * FROM Movie m JOIN FETCH m.neighbours ORDER BY m.name asc limit 4", nativeQuery = true)
+    @Query(value = "SELECT * FROM Movie m ORDER BY m.name asc limit 4", nativeQuery = true)
     List<JpaMovie> get4Alphabetic();
 
     @Query(value = "SELECT * FROM Tag t WHERE t.tmdb_id = ?1 ORDER BY t.name asc", nativeQuery = true)
@@ -28,11 +29,13 @@ public class JpaMovieRepository implements MovieRepository {
     private JpaMovieRepositoryInterface jpaRepository;
     private final ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder().build();
 
+    @Transactional
     @Override
     public Movie findById(Long id) {
         return objectMapper.convertValue(jpaRepository.findById(id), Movie.class);
     }
 
+    @Transactional
     @Override
     public List<Movie> findAll() {
         return jpaRepository.findAll().stream().map(jpaMovie -> objectMapper.convertValue(jpaMovie, Movie.class)).toList();
@@ -67,6 +70,7 @@ public class JpaMovieRepository implements MovieRepository {
         jpaRepository.deleteAll();
     }
 
+    @Transactional
     @Override
     public List<Movie> getBestMatch(List<MovieTag> tags) {
         return jpaRepository.get4Alphabetic().stream().map(jpaMovie -> objectMapper.convertValue(jpaMovie, Movie.class)).toList();
