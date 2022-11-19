@@ -7,11 +7,12 @@ import lombok.Setter;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class Message {
-    String text;
-    List<MovieTag> preferences;
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserInputResponseDto {
+    private List<Movie> movies;
+    private List<MovieTag> tagsFromText;
+    private String question;
 }

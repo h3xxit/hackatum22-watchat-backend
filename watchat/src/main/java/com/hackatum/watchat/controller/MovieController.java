@@ -5,6 +5,7 @@ import com.hackatum.watchat.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,12 +16,17 @@ public class MovieController {
     private MovieRepository movieRepository;
 
     @PostMapping("/saveMovie")
-    void saveMovie(@RequestBody Movie movie){
-        movieRepository.save(movie);
+    Movie saveMovie(@RequestBody Movie movie){
+        return movieRepository.save(movie);
     }
 
     @PostMapping("/saveMovies")
-    void saveMovies(@RequestBody List<Movie> movie){
-        movieRepository.saveAll(movie);
+    List<Movie> saveMovies(@RequestBody List<Movie> movie){
+        return movieRepository.saveAll(movie);
+    }
+
+    @PostMapping("/movie")
+    Movie getMovie(@RequestParam("id") Long movieId){
+        return movieRepository.findById(movieId);
     }
 }

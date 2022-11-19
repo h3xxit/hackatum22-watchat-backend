@@ -17,8 +17,6 @@ public class JpaMovieTag {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    //@ManyToOne
-    //private JpaMovie movie;
     @Column(name="name", nullable=false)
     private String name;
     @Column(name="match", nullable=false)

@@ -2,23 +2,31 @@ package com.hackatum.watchat.repository.jpaRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackatum.watchat.entities.Movie;
+import com.hackatum.watchat.entities.MovieTag;
+import com.hackatum.watchat.entities.Tag;
 import com.hackatum.watchat.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
 import java.util.List;
 
-interface JpaBusinessObjectRepositoryInterface extends JpaRepository<JpaMovie, Long> {
+interface JpaMovieRepositoryInterface extends JpaRepository<JpaMovie, Long> {
+    @Query(value = "SELECT * FROM Movie m ORDER BY m.name asc limit 4", nativeQuery = true)
+    List<JpaMovie> get4Alphabetic();
+
+    @Query(value = "SELECT * FROM Tag t WHERE t.tmdb_id = ?1 ORDER BY t.name asc", nativeQuery = true)
+    List<JpaMovieTag> getTagsFromMovie(Long id);
 }
 
 @Repository
 public class JpaMovieRepository implements MovieRepository {
     @Autowired
-    private JpaBusinessObjectRepositoryInterface jpaRepository;
-    private ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder().build();
+    private JpaMovieRepositoryInterface jpaRepository;
+    private final ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder().build();
 
     @Override
     public Movie findById(Long id) {
@@ -52,5 +60,10 @@ public class JpaMovieRepository implements MovieRepository {
     @Override
     public void deleteById(Long id) {
         jpaRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Movie> getBestMatch(List<MovieTag> tags) {
+        return jpaRepository.get4Alphabetic().stream().map(jpaMovie -> objectMapper.convertValue(jpaMovie, Movie.class)).toList();
     }
 }

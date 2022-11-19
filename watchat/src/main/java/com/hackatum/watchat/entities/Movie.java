@@ -8,9 +8,12 @@ import java.util.List;
 @Getter
 @Setter
 public class Movie implements HasId<Long>{
-    Long id;
-    String name;
-    List<MovieTag> tags;
+    private Long id;
+    private String name;
+    private String description;
+    private String image;
+    private String redirect;
+    private List<MovieTag> tags;
 
     @Override
     public Long getId(){

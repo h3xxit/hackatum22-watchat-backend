@@ -21,9 +21,13 @@ public class JpaMovie {
     private Long id;
     @Column(name="name", nullable=false)
     private String name;
+    private String description;
+    private String image;
+    private String redirect;
     @OneToMany(
         cascade = CascadeType.ALL,
-        orphanRemoval = true
+        orphanRemoval = true,
+        fetch = FetchType.EAGER
     )
     @JoinColumn(name = "tmdb_id")
     private List<JpaMovieTag> tags;
