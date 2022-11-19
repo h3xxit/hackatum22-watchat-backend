@@ -12,11 +12,13 @@ public class MovieController {
     @Autowired
     private MovieRepository movieRepository;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/saveMovie")
     private Movie saveMovie(@RequestBody Movie movie){
         return movieRepository.save(movie);
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/saveMovies")
     private List<Movie> saveMovies(@RequestBody List<Movie> movie){
         return movieRepository.saveAll(movie);
