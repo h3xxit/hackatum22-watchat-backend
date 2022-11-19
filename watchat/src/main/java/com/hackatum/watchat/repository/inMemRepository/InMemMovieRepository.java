@@ -1,6 +1,6 @@
 package com.hackatum.watchat.repository.inMemRepository;
 
-import com.hackatum.watchat.repository.MovieRepository;
+import com.hackatum.watchat.entities.Movie;
 
-public class InMemMovieRepository implements MovieRepository {
+public class InMemMovieRepository extends InMemRepository<Movie, String>{
 }
