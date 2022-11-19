@@ -7,12 +7,13 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Movie implements HasId<String>{
+public class Movie implements HasId<Long>{
+    Long id;
     String name;
     List<Tag> tags;
 
     @Override
-    public String getId(){
-        return name;
+    public Long getId(){
+        return id;
     }
 }
