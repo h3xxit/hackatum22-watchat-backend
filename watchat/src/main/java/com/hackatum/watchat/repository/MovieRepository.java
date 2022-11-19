@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface MovieRepository extends ReadWriteRepository<Movie, Long>{
     List<Movie> getBestMatch(List<MovieTag> tags);
+    List<Movie> getBestMatch(List<MovieTag> tags, Long startId);
 }

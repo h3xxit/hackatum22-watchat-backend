@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,7 +23,18 @@ public class WatchatApplicationListener implements ApplicationListener<Applicati
     @Autowired
     private TagRepository tagRepository;
 
-    List<String> tags = List.of("anime", "car", "battle", "love", "comedy", "happy", "sad", "police", "superhero", "dystopia");
+    List<String> tags = List.of(
+            "superhero",
+            "sport",
+            "criminal",
+            "happy",
+            "sad",
+            "horror",
+            "love",
+            "funny",
+            "space",
+            "fantasy"
+        );
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {

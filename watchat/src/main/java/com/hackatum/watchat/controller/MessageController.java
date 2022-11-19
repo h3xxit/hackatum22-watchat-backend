@@ -23,7 +23,7 @@ public class MessageController {
         return classifierService.classify(msg.getText()).map(movieTags ->
         {
             calculateWeights(movieTags, msg.getPreferences());
-            return new UserInputResponseDto(movieRepository.getBestMatch(movieTags), movieTags, "");
+            return new UserInputResponseDto(movieRepository.getBestMatch(movieTags), movieTags, "Test question");
         });
     }
 
@@ -33,7 +33,7 @@ public class MessageController {
         Movie movie = movieRepository.findById(msg.getMovieId());
         List<MovieTag> movieTags = List.copyOf(movie.getTags());
         calculateWeights(movieTags, msg.getPreferences());
-        return new UserInputResponseDto(movieRepository.getBestMatch(movieTags), movieTags, ""); //movie.getId()
+        return new UserInputResponseDto(movieRepository.getBestMatch(movieTags, movie.getId()), movieTags, "");
     }
 
     void calculateWeights(List<MovieTag> newTags, List<MovieTag> preferences){

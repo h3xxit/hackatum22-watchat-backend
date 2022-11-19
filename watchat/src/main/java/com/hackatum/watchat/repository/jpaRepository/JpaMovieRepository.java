@@ -63,6 +63,10 @@ public class JpaMovieRepository implements MovieRepository {
         return objectMapper.convertValue(jpaRepository.save(objectMapper.convertValue(entity, JpaMovie.class)), Movie.class);
     }
 
+    public List<JpaMovie> saveAllJpa(Iterable<JpaMovie> entities) {
+        return jpaRepository.saveAll(entities);
+    }
+
     @Override
     public List<Movie> saveAll(Iterable<Movie> entities) {
         List<Movie> result = new LinkedList<>();
@@ -85,8 +89,14 @@ public class JpaMovieRepository implements MovieRepository {
     @Transactional
     @Override
     public List<Movie> getBestMatch(List<MovieTag> tags) {
+        return getBestMatch(tags, jpaRepository.getRandom());
+    }
+
+    @Transactional
+    @Override
+    public List<Movie> getBestMatch(List<MovieTag> tags, Long startId) {
         SortedSet<MovieWrapper> candidates = new TreeSet<>();
-        Long firstId = jpaRepository.getRandom();
+        Long firstId = startId;
         MovieWrapper best;
         Movie currentMovie;
         do {
