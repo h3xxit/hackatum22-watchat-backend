@@ -29,14 +29,14 @@ public class JpaMovieRepository implements MovieRepository {
         put("superhero", 0.8);
         put("sport", 0.8);
         put("criminal", 0.7);
-        put("happy", 1.4);
+        put("happy", 1.0);
         put("sad", 1.5);
         put("horror", 1.0);
         put("love", 1.3);
-        put("funny", 0.9);
-        put("space", 0.7);
+        put("funny", 0.5);
+        put("space", 1.5);
         put("fantasy", 0.9);
-        put("popularity", 0.01);
+        put("popularity", 0.02);
     }};
     @Autowired
     private JpaMovieRepositoryInterface jpaRepository;
@@ -141,7 +141,7 @@ public class JpaMovieRepository implements MovieRepository {
         } while (best.getMovie().getId() != currentMovie.getId());
         List<Movie> result = new ArrayList<>(6);
         int i=0;
-        while (i<4 && !candidates.isEmpty()) {
+        while (i<5 && !candidates.isEmpty()) {
             MovieWrapper first = candidates.first();
             candidates.remove(first);
             result.add(first.getMovie());

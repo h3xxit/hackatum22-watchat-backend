@@ -41,7 +41,12 @@ public class MessageController {
         List<MovieTag> movieTags = new ArrayList<>(List.copyOf(movie.getTags()));
         movieTags.add(new MovieTag("popularity", 0.7));
         calculateWeights(movieTags, msg.getPreferences());
-        return new UserInputResponseDto(movieRepository.getBestMatch(movieTags, movie.getId()), movieTags, "");
+        List<Movie> results = movieRepository.getBestMatch(movieTags, movie.getId());
+        results.removeIf(itm -> Objects.equals(itm.getId(), msg.getMovieId()));
+        if(results.size() == 5){
+            results.remove(4);
+        }
+        return new UserInputResponseDto(results, movieTags, "");
     }
 
     void calculateWeights(List<MovieTag> newTags, List<MovieTag> preferences){

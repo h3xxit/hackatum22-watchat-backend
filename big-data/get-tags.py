@@ -23,7 +23,9 @@ candidate_labels = [
 ]
 
 def get_tags_by_description(tags: list[str], description: str) -> dict :
-    return json.loads(classifier(description, tags, multi_class=True))
+    result = classifier(description, tags, multi_label=True)
+    print(result)
+    return result
     """
     data = json.dumps({"parameters": {"candidate_labels": tags, 'multi_label': True}, "inputs": description})
     response = requests.request("POST", HUGGINGFACE_API_URL, headers=huggingface_headers, data=data)

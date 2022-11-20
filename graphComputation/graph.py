@@ -4,19 +4,19 @@ from math import sqrt
 
 DBNAME = "watchatdb"
 DBUSER = "postgres"
-GRAPHDEPTH = 100
+GRAPHDEPTH = 200
 WEIGHTS = {
       'superhero': 0.8,
       'sport': 0.8,
       'criminal': 0.7,
-      'happy': 1.4,
+      'happy': 1,
       'sad': 1.5,
       'horror': 1,
       'love': 1.3,
-      'funny': 0.9,
-      'space': 0.7,
+      'funny': 0.5,
+      'space': 1.5,
       'fantasy': 0.9,
-      'popularity':0.01
+      'popularity':0.02
       }
 
 class Node:
@@ -30,7 +30,7 @@ class Node:
     res = 0
     for name, match in self.tags.items():
       tmp = abs(match - node.tags[name])
-      if(tmp > 0.1):
+      if(tmp > 0.01):
         res += pow(match - node.tags[name],2) * WEIGHTS[name] # weighted euclidean distance
     return sqrt(res)
 
