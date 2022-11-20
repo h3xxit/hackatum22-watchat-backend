@@ -54,7 +54,7 @@ public class MessageController {
             if(preferences == null) continue;
             MovieTag pair = preferences.stream().filter(pref -> Objects.equals(pref.getName(), movieTag.getName())).findFirst().orElse(null);
             if(pair == null) continue;
-            movieTag.setMatch(movieTag.getMatch() * 0.7 + pair.getMatch() * 0.3);
+            movieTag.setMatch(movieTag.getMatch() * 0.9 + pair.getMatch() * 0.1);
         }
     }
 }
