@@ -27,16 +27,16 @@ public class JpaMovieRepository implements MovieRepository {
 
     private final static HashMap<String, Double> WEIGHTS = new HashMap<>(){{
         put("superhero", 0.8);
-        put("sport", 0.8);
-        put("criminal", 0.7);
+        put("sport", 0.5);
+        put("criminal", 0.8);
         put("happy", 1.0);
-        put("sad", 1.5);
+        put("sad", 1.1);
         put("horror", 1.0);
         put("love", 1.3);
         put("funny", 0.5);
         put("space", 1.5);
-        put("fantasy", 0.9);
-        put("popularity", 0.02);
+        put("fantasy", 1.2);
+        put("popularity", 0.001);
     }};
     @Autowired
     private JpaMovieRepositoryInterface jpaRepository;
