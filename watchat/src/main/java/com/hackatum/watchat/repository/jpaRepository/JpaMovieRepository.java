@@ -139,12 +139,20 @@ public class JpaMovieRepository implements MovieRepository {
             }
             firstId = best.getMovie().getId();
         } while (best.getMovie().getId() != currentMovie.getId());
-        List<Movie> result = new ArrayList<>(6);
+        List<Movie> best20 = new ArrayList<>(20);
         int i=0;
-        while (i<5 && !candidates.isEmpty()) {
+        while (i<20 && !candidates.isEmpty()) {
             MovieWrapper first = candidates.first();
             candidates.remove(first);
-            result.add(first.getMovie());
+            best20.add(first.getMovie());
+            ++i;
+        }
+        List<Movie> result = new ArrayList<>(5);
+        i=0;
+        while (i<5 && !best20.isEmpty()) {
+            Movie r = best20.get((int) (Math.random()*best20.size()));
+            best20.remove(r);
+            result.add(r);
             ++i;
         }
         return result;
