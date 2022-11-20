@@ -1,6 +1,9 @@
 import json
 import requests
 import psycopg2
+from transformers import pipeline
+classifier = pipeline("zero-shot-classification",
+                      model="facebook/bart-large-mnli")
 
 HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-mnli"
 HUGGINGFACE_API_TOKEN = "" # ENTER API TOKEN HERE
@@ -20,12 +23,15 @@ candidate_labels = [
 ]
 
 def get_tags_by_description(tags: list[str], description: str) -> dict :
+    return json.loads(classifier(description, tags, multi_class=True))
+    """
     data = json.dumps({"parameters": {"candidate_labels": tags, 'multi_label': True}, "inputs": description})
     response = requests.request("POST", HUGGINGFACE_API_URL, headers=huggingface_headers, data=data)
     if response.status_code != 200:
         print(response.text)
         return None
     return json.loads(response.content.decode("utf-8"))
+    """
 
 def write_tags_to_db(tmdb_id: int, tags: dict, cur, con):
     for t in tags:
