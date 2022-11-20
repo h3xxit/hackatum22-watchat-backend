@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,6 +28,7 @@ public class MessageController {
         }
         return classifierService.classify(msg.getText()).map(movieTags ->
         {
+            movieTags.add(new MovieTag("popularity", 0.7));
             calculateWeights(movieTags, msg.getPreferences());
             return new UserInputResponseDto(movieRepository.getBestMatch(movieTags), movieTags, "Test question");
         });
@@ -36,7 +38,8 @@ public class MessageController {
     @PostMapping("/similar")
     UserInputResponseDto findSimilar(@RequestBody SimilarityMessage msg){
         Movie movie = movieRepository.findById(msg.getMovieId());
-        List<MovieTag> movieTags = List.copyOf(movie.getTags());
+        List<MovieTag> movieTags = new ArrayList<>(List.copyOf(movie.getTags()));
+        movieTags.add(new MovieTag("popularity", 0.7));
         calculateWeights(movieTags, msg.getPreferences());
         return new UserInputResponseDto(movieRepository.getBestMatch(movieTags, movie.getId()), movieTags, "");
     }

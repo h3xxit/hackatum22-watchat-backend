@@ -166,7 +166,7 @@ public class JpaMovieRepository implements MovieRepository {
         for (Map.Entry<String, Double> tag : htag1.entrySet()) {
             if(htag2.containsKey(tag.getKey())) {
                 double diff = Math.abs(tag.getValue() - htag2.get(tag.getKey()));
-                if (diff > 0.1) {
+                if (diff > 0.01) {
                     diff *= diff;
                     diff *= JpaMovieRepository.WEIGHTS.get(tag.getKey());
                     res += diff;
