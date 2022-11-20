@@ -1,22 +1,22 @@
 import psycopg2
 from sortedcontainers import SortedDict
-from math import sqrt
+from math import sqrt, exp
 
 DBNAME = "watchatdb"
 DBUSER = "postgres"
-GRAPHDEPTH = 200
+GRAPHDEPTH = 50
 WEIGHTS = {
       'superhero': 0.8,
-      'sport': 0.8,
-      'criminal': 0.7,
-      'happy': 1,
-      'sad': 1.5,
+      'sport': 0.5,
+      'criminal': 0.8,
+      'happy': 1.0,
+      'sad': 1.1,
       'horror': 1,
       'love': 1.3,
       'funny': 0.5,
       'space': 1.5,
-      'fantasy': 0.9,
-      'popularity':0.02
+      'fantasy': 1.2,
+      'popularity':0.0005
       }
 
 class Node:
@@ -31,7 +31,7 @@ class Node:
     for name, match in self.tags.items():
       tmp = abs(match - node.tags[name])
       if(tmp > 0.01):
-        res += pow(match - node.tags[name],2) * WEIGHTS[name] # weighted euclidean distance
+        res += (exp(max(match, node.tags[name])+5) - exp(5)) * pow(match - node.tags[name],2) * WEIGHTS[name] # weighted euclidean distance
     return sqrt(res)
 
   def updateNeighbours(self, node):
