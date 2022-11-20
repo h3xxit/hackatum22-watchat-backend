@@ -52,6 +52,8 @@ tmdb_desc_pop = cur.fetchall()
 
 j = 0
 for id,desc,pop in tmdb_desc_pop:
+    if desc is None or desc == "" or candidate_labels == []:
+        continue
     tags = get_tags_by_description(candidate_labels, desc)
     if not tags:
         continue

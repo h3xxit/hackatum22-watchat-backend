@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 interface JpaMovieRepositoryInterface extends JpaRepository<JpaMovie, Long> {
-    @Query(value = "SELECT m.tmdb_id FROM Movie m ORDER BY Random() limit 1", nativeQuery = true)
+    @Query(value = "SELECT t.tmdb_id FROM Tag t GROUP BY t.tmdb_id ORDER BY Random() limit 1", nativeQuery = true)
     Long getRandom();
 
     @Query(value = "SELECT * FROM Tag t WHERE t.tmdb_id = ?1 ORDER BY t.name asc", nativeQuery = true)
