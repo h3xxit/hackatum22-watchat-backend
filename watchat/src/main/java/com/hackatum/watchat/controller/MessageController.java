@@ -28,7 +28,7 @@ public class MessageController {
         }
         return classifierService.classify(msg.getText()).map(movieTags ->
         {
-            movieTags.add(new MovieTag("popularity", 75));
+            movieTags.add(new MovieTag("popularity", 0.4 + (-0.05+Math.random()*0.1)));
             calculateWeights(movieTags, msg.getPreferences());
             return new UserInputResponseDto(movieRepository.getBestMatch(movieTags), movieTags, "Test question");
         });
@@ -39,7 +39,7 @@ public class MessageController {
     UserInputResponseDto findSimilar(@RequestBody SimilarityMessage msg){
         Movie movie = movieRepository.findById(msg.getMovieId());
         List<MovieTag> movieTags = new ArrayList<>(List.copyOf(movie.getTags()));
-        movieTags.add(new MovieTag("popularity", 0.7));
+        movieTags.add(new MovieTag("popularity", 0.4 + (-0.05+Math.random()*0.1)));
         calculateWeights(movieTags, msg.getPreferences());
         List<Movie> results = movieRepository.getBestMatch(movieTags, movie.getId());
         results.removeIf(itm -> Objects.equals(itm.getId(), msg.getMovieId()));
