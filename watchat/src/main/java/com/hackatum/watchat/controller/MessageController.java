@@ -28,7 +28,7 @@ public class MessageController {
         }
         return classifierService.classify(msg.getText()).map(movieTags ->
         {
-            movieTags.add(new MovieTag("popularity", 0.7));
+            movieTags.add(new MovieTag("popularity", 75));
             calculateWeights(movieTags, msg.getPreferences());
             return new UserInputResponseDto(movieRepository.getBestMatch(movieTags), movieTags, "Test question");
         });
