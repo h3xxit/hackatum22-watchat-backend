@@ -1,5 +1,8 @@
 package com.hackatum.watchat.repository.jpaRepository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hackatum.watchat.entities.Movie;
+import com.hackatum.watchat.entities.MovieTag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +19,15 @@ import java.util.List;
 @Table(name = "movie")
 public class JpaMovie {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "tmdb_id")
     private Long id;
     @Column(name="name", nullable=false)
     private String name;
     @Column(columnDefinition = "TEXT")
     private String description;
+    @Column(columnDefinition = "TEXT")
     private String image;
+    @Column(columnDefinition = "TEXT")
     private String redirect;
     @OneToMany(
         cascade = CascadeType.ALL,
@@ -34,4 +38,9 @@ public class JpaMovie {
     private List<JpaMovieTag> tags;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<JpaMovie> neighbours;
+
+    public Movie toMovie(ObjectMapper objectMapper){
+        return new Movie(getId(), getName(), getDescription(), getImage(), getRedirect(),
+                getTags().stream().map(jpaMovieTag -> objectMapper.convertValue(jpaMovieTag, MovieTag.class)).toList());
+    }
 }

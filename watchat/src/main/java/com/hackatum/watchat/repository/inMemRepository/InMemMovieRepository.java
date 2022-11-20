@@ -14,4 +14,9 @@ public class InMemMovieRepository extends InMemRepository<Movie, Long> implement
     public List<Movie> getBestMatch(List<MovieTag> tags) {
         return null;
     }
+
+    @Override
+    public List<Movie> getBestMatch(List<MovieTag> tags, Long startId) {
+        return null;
+    }
 }
