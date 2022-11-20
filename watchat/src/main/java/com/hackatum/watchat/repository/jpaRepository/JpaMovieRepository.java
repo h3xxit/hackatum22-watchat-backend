@@ -177,7 +177,7 @@ public class JpaMovieRepository implements MovieRepository {
                 if (diff > 0.01) {
                     diff *= diff;
                     diff *= JpaMovieRepository.WEIGHTS.get(tag.getKey());
-                    res += diff;
+                    res += diff * (Math.exp(5 + Math.max(tag.getValue(), htag2.get(tag.getKey()))) - Math.exp(5));
                 }
             }else {
                 System.out.println("Tag: " + tag.getKey() + " is missing!");
