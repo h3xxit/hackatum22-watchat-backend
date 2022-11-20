@@ -9,13 +9,13 @@ WEIGHTS = {
       'superhero': 0.8,
       'sport': 0.5,
       'criminal': 0.8,
-      'happy': 1.0,
-      'sad': 1.1,
+      'romance': 1.0,
+      'comedy': 1.1,
       'horror': 1,
-      'love': 1.3,
-      'funny': 0.5,
-      'space': 1.5,
+      'science fiction': 1,
       'fantasy': 1.2,
+      'documentary': 1.0,
+      'fighting': 1.0,
       'popularity':0.0005
       }
 

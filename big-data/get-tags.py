@@ -13,13 +13,16 @@ candidate_labels = [
     'superhero',
     'sport',
     'criminal',
-    'happy',
-    'sad',
     'horror',
-    'love',
-    'funny',
+    'romance',
     'space',
-    'fantasy'
+    'fantasy',
+    'comedy',
+    'drama',
+    'science fiction',
+    'documentary',
+    'fighting',
+    'family'
 ]
 
 def get_tags_by_description(tags: list[str], description: str) -> dict :

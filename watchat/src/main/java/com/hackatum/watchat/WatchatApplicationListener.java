@@ -27,13 +27,13 @@ public class WatchatApplicationListener implements ApplicationListener<Applicati
             "superhero",
             "sport",
             "criminal",
-            "happy",
-            "sad",
             "horror",
-            "love",
-            "funny",
-            "space",
-            "fantasy"
+            "romance",
+            "fantasy",
+            "comedy",
+            "science fiction",
+            "documentary",
+            "fighting"
         );
 
     @Override
